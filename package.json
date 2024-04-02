@@ -22,7 +22,8 @@
   },
   "scripts": {
     "backend": "nodemon server/index",
-    "start": "concurrently \"npm run backend\" \"npm run start --prefix client\"",
+    "dev": "node index.js",
+    "start" : "concurrently \"npm run backend\" \"npm run start --prefix client\"",
     "test": "react-scripts test"
   },
   "eslintConfig": {
