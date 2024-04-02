@@ -6,16 +6,24 @@
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "bcrypt": "^5.1.1",
+    "concurrently": "^8.2.2",
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "express-mysql-session": "^3.0.0",
+    "express-session": "^1.18.0",
+    "mysql2": "^3.9.3",
+    "nodemon": "^3.1.0",
+    "path": "^0.12.7",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "backend": "nodemon server/index",
+    "start": "concurrently \"npm run backend\" \"npm run start --prefix client\"",
+    "test": "react-scripts test"
   },
   "eslintConfig": {
     "extends": [
