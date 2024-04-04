@@ -18,6 +18,19 @@ const Register = () => {
         }
     }
 
+    async function handleSubmit () {
+        try {
+            const formData = new FormData();
+            formData.append('title', title);
+            formData.append('category', category);
+            formData.append('description', description);
+            formData.append('writer', writer);
+            formData.append('platform', platform);
+        }
+        catch(error) {
+            console.error('Error during POST request', error);
+        }
+    }
 
 
     return (
@@ -60,7 +73,7 @@ const Register = () => {
                         <p>작품명</p>
                     </div>
                     <div>
-                        <input type="text" />
+                        <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} />
                     </div>
                 </div>
                 <div>
@@ -68,7 +81,7 @@ const Register = () => {
                         <p>플랫폼</p>
                     </div>
                     <div>
-                        <input type="text" />
+                        <input type="text" value={platform} onChange={(e) => setPlatform(e.target.value)} />
                     </div>
                 </div>
                 <div>
@@ -76,8 +89,12 @@ const Register = () => {
                         <p>작품 소개</p>
                     </div>
                     <div>
-                        <textarea rows="20" cols="80" />
+                        <textarea rows="20" cols="80" value={description} onChange={(e) => setDescription(e.target.value)} />
                     </div>
+                </div>
+                <div>
+                    <button type="submit">작품 등록</button>
+                    <button>취소하기</button>
                 </div>
             </div> 
         </div>
