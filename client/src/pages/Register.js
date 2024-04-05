@@ -26,6 +26,28 @@ const Register = () => {
             formData.append('description', description);
             formData.append('writer', writer);
             formData.append('platform', platform);
+
+            img.forEach((img) => {
+                formData.append('files', img)
+            })
+
+            for (var key of formData) {
+                console.log(key);
+            }
+
+            await axios.post('http://localhost:8000/novel', formData, {
+                headers: {
+                    'Content-Type' : 'multipart/form-data',
+                }
+            })
+            .then((result) => {
+                console.log('요청성공')
+                console.log(result)
+            })
+            .catch((error) => {
+                console.log('요청실패')
+                console.log(error);
+            })
         }
         catch(error) {
             console.error('Error during POST request', error);
