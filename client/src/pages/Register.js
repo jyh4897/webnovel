@@ -115,7 +115,7 @@ const Register = () => {
                     </div>
                 </div>
                 <div>
-                    <button type="submit">작품 등록</button>
+                    <button type="submit" onClick={handleSubmit()}>작품 등록</button>
                     <button>취소하기</button>
                 </div>
             </div> 
