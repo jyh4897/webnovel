@@ -28,7 +28,7 @@ const pool = mysql.createPool({
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "images/");
+    cb(null, "server/images/");
   },
   filename: (req, file, cb) => {
     var ext = path.extname(file.originalname);
@@ -48,32 +48,22 @@ app.get("/novel", (req, res) => {
 
 app.post("/novel", upload.single("files"), async (req, res) => {
   const { title, category, description, writer, platform } = req.body;
-  const filePaths = req.files.map((file) => ({
-    column : "thumbnail",
-    path : file.path
-  }));
-  console.log(filePaths[0]);
+  const filePath = `http://localhost:8000/${req.file.path.replace(/\\/g, "/")
+  .replace("images/", "")
+  .replace("server/", "")}`
+  console.log(filePath);
   const columns = [
     "novelid",
     "title",
     "category",
     "description",
     "writer",
-    "platform"
+    "platform",
+    "thumbnail"
   ];
-  const values = [ title, category, description, writer, platform ];
+  const values = [ title, category, description, writer, platform, filePath ];
 
-  filePaths.forEach((file) => {
-    if (file.path) {
-      const imgURL = `http://localhost:8000/${file.path}`
-      console.log('imgurl',imgURL)
-      columns.push(file.column);
-      values.push(imgURL)
-    }
-  });
-
-  const sqlQuery = `INSERT INTO novel.novel (${columns.join(", ")}) VALUES (
-    null, ${Array(values.length).fill("?").join(", ")});`;
+  const sqlQuery = `INSERT INTO novel.novel (${columns.join(", ")}) VALUES (null, ${Array(values.length).fill("?").join(", ")});`;
 
   pool.query(sqlQuery, values, (err, result) => {
     if(err) {

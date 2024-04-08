@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import axios from 'axios'
 
 
 const Register = () => {
@@ -23,7 +24,7 @@ const Register = () => {
             const formData = new FormData();
             formData.append('title', title);
             formData.append('category', category);
-            formData.append('description', description);
+            formData.append('description', description.replace(/\n/g, '<br>'));
             formData.append('writer', writer);
             formData.append('platform', platform);
 
@@ -115,7 +116,7 @@ const Register = () => {
                     </div>
                 </div>
                 <div>
-                    <button type="submit" onClick={handleSubmit()}>작품 등록</button>
+                    <button type="submit" onClick={handleSubmit}>작품 등록</button>
                     <button>취소하기</button>
                 </div>
             </div> 
