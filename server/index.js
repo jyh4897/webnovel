@@ -75,6 +75,13 @@ app.post("/novel", upload.single("files"), async (req, res) => {
   });
 })
 
+app.get("/avgrate", (req, res) => {
+  const sqlQuery = "SELECT nv.novelid, nv.title, AVG(NOVEL.review.rate) AS avgrate FROM NOVEL.review INNER JOIN NOVEL.novel AS NV ON NOVEL.review.novelid = nv.novelid GROUP BY nv.novelid";
+  pool.query(sqlQuery, (err, result) => {
+    res.send(result);
+  });
+})
+
 
 app.listen(app.get("port"), () => {
     console.log(app.get("port"), `port server on...`);
