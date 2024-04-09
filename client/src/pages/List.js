@@ -32,7 +32,7 @@ const List = () => {
 
     useEffect(() => {
         async function fetchData() {
-            try{
+            try {
                 const rawData = await axios.get('http://localhost:8000/novel', {});
                 const sortedData = await rawData.data.filter((it) => it.category == genre);
                 const novels = sortedData.map((it) => ({
@@ -69,9 +69,11 @@ const List = () => {
 
     return (
         <div>
+            <div>
 
 
-            <Paging page={currentPage} count={count} handleChangePage={handleChangePage} postPerPage={postPerPage} />
+                <Paging page={currentPage} count={count} handleChangePage={handleChangePage} postPerPage={postPerPage} />
+            </div>
         </div>
     )
 }
