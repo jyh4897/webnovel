@@ -58,11 +58,11 @@ const List = () => {
             
         }
         fetchData();
-    },[genre, page])
+    },[genre, page, rate])
 
     useEffect(() => {
         setCurrentPosts(novel.slice(indexOfFirstPost, indexOfLastPost));
-    }, [novel, page, genre])
+    }, [novel, page, genre, indexOfFirstPost, indexOfLastPost])
 
     const handleChangePage = (page) => {
         setCurrentPage(page)
@@ -76,7 +76,7 @@ const List = () => {
                     currentPosts.map((it) => (
                         <div key={it.novelid}>
                             <div>
-                                <img src={it.thumbnail} />
+                                <img src={it.thumbnail} alt="img"/>
                             </div>
                             <div>
                                 <p>{it.title}</p>
@@ -89,7 +89,7 @@ const List = () => {
                             )) : <div><p>리뷰가 존재하지 않습니다</p></div>}
                         </div>
                     ))
-                    : ''}
+                    : <div>등록된 작품이 없습니다.</div>}
                 </div>
                 <Paging page={currentPage} count={count} handleChangePage={handleChangePage} postPerPage={postPerPage} />
             </div>
