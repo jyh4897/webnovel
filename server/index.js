@@ -83,6 +83,14 @@ app.get("/avgrate", (req, res) => {
 })
 
 
+app.get("/user", (req, res) => {
+  const sqlQuery = "SELECT * FROM user";
+  pool.query(sqlQuery, (err, result) => {
+    res.send(result);
+  })
+})
+
+
 app.listen(app.get("port"), () => {
     console.log(app.get("port"), `port server on...`);
 });
