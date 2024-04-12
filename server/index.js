@@ -90,6 +90,34 @@ app.get("/user", (req, res) => {
   })
 })
 
+app.post("/chekusername", (req, res) => {
+  const { username } = req.body;
+  const sqlQuery = "SELECT * FROM user WHERE username = ?";
+  pool.query(sqlQuery, [username], (err, result) => {
+    if (err) {
+      console.error("DB에서 중복 확인 중 오류", err);
+      return res.status(500).json({
+        success : false,
+        message : "ID 중복 확인 중 오류가 발생하였습니다.",
+        error : err.message
+      })
+    }
+
+    if (result.length > 0) {
+      return res.status(200).json({
+        success : false,
+        message : "이미 등록된 ID입니다.",
+      });
+    } 
+    else {
+      return res.status(200).json({
+        success : true,
+        message : "사용 가능한 ID입니다."
+      })
+    }
+  });
+});
+
 
 app.listen(app.get("port"), () => {
     console.log(app.get("port"), `port server on...`);
