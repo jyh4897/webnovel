@@ -34,6 +34,27 @@ const Memberregister = () => {
         })
     }
 
+    const handleEmailcheck = () => {
+        if (!email) {
+            alert("email을 입력해주세요!");
+            return
+        }
+        axios.post('http://localhost:8000.checkeamil', { email })
+        .then((result) => {
+            console.log("요청성공");
+            console.log(result);
+        })
+        .then((res) => {
+            console.log("서버 응답:", res.data);
+            setEmailduplication(res.data.success);
+            alert(res.data.message);
+        })
+        .catch((err) => {
+            console.error("중복확인 중 오류", err)
+            alert("email 중복 확인 중 오류가 발생하였습니다.");
+        })
+    }
+
 
     return (
         <div>
@@ -110,7 +131,7 @@ const Memberregister = () => {
                              />
                         </div>
                         <div>
-                            <button>중복확인</button>
+                            <button onClick={handleEmailcheck}>중복확인</button>
                         </div>
                     </div>
                 </div>
