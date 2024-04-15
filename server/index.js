@@ -118,32 +118,8 @@ app.post("/chekusername", (req, res) => {
   });
 });
 
-app.post("/checkemail", (req, res) => {
-  const { email } = req.body;
-  const sqlQuery = "SELECT * FROM user WHERE email = ?";
-  pool.query(sqlQuery, [email], (err, result) => {
-    if (err) {
-      console.error("DB에서 중복 확인 중 오류", err);
-      return res.status(500).json({
-        success : false,
-        message : "email 중복 확인 중 오류가 발생하였습니다.",
-        error : err.message
-      })
-    }
-
-    if (result.length > 0) {
-      return res.status(200).json({
-        success : false,
-        message : "이미 등록된 email입니다.",
-      });
-    } 
-    else {
-      return res.status(200).json({
-        success : true,
-        message : "사용 가능한 email입니다."
-      })
-    }
-  })
+app.post("/userregister", (req, res) => {
+  
 })
 
 

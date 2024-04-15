@@ -10,7 +10,7 @@ const Memberregister = () => {
     const [checkpassword, setCheckpassword] = useState('');
     const [email, setEmail] = useState('');
     const [nameduplication , setNameduplication] = useState(false);
-    const [emailduplication, setEmailduplication] = useState(false);
+
 
     const handleUsernamecheck = () => {
         if (!username) {
@@ -34,27 +34,45 @@ const Memberregister = () => {
         })
     }
 
-    const handleEmailcheck = () => {
-        if (!email) {
-            alert("email을 입력해주세요!");
-            return
-        }
-        axios.post('http://localhost:8000.checkeamil', { email })
-        .then((result) => {
-            console.log("요청성공");
-            console.log(result);
-        })
-        .then((res) => {
-            console.log("서버 응답:", res.data);
-            setEmailduplication(res.data.success);
-            alert(res.data.message);
-        })
-        .catch((err) => {
-            console.error("중복확인 중 오류", err)
-            alert("email 중복 확인 중 오류가 발생하였습니다.");
-        })
-    }
 
+    const handleSubmint = async () => {
+        try { 
+            if(!username || !nickname || !password || !checkpassword || !email) {
+            alert("필수 입력사항들을 모두 입력해주세요");
+            return;
+            }
+            if (!nameduplication) {
+                alert("ID 중복 확인을 해주세요");
+                return;
+            }
+            if (!email.includes('@')) {
+                alert("올바른 이메일 형식이 아닙니다.");
+                return;
+            }
+            if (password !== checkpassword) {
+                alert("비밀번호가 일치하지 않습니다.");
+                return;
+            }
+
+            await axios.post("http://localhost:8000/userregister", {
+                username,
+                nickname,
+                password,
+                email
+            })
+            .then((result) => {
+                console.log("요청성공");
+                console.log(result);
+            })
+            .catch((err) => {
+                console.log('err');
+                console.log(err);
+            })
+        }
+        catch {
+            console.error('에러');
+        }
+    }
 
     return (
         <div>
@@ -131,12 +149,12 @@ const Memberregister = () => {
                              />
                         </div>
                         <div>
-                            <button onClick={handleEmailcheck}>중복확인</button>
+                            <button>중복확인</button>
                         </div>
                     </div>
                 </div>
                 <div>
-                    <button type="submit">회원가입</button>
+                    <button type="submit" onClick={handleSubmint}>회원가입</button>
                     <button>취소</button>
                 </div>
             </div>
