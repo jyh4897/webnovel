@@ -51,14 +51,12 @@ const List = () => {
                 setNovel(sortedNovels);
                 setRate(rates);
                 setCount(sortedNovels.length); 
-                console.log(rate)
             } catch (error) {
                 console.error('Error fetching data', error);
             }
-            
         }
         fetchData();
-    },[genre, page, rate])
+    },[genre, page])
 
     useEffect(() => {
         setCurrentPosts(novel.slice(indexOfFirstPost, indexOfLastPost));

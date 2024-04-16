@@ -17,13 +17,10 @@ const Memberregister = () => {
             alert("ID를 입력해주세요!");
             return
         }
-
+        console.log(username)
         axios.post('http://localhost:8000/checkusername', { username })
-        .then((result) => {
-            console.log('요청성공');
-            console.log(result);
-        })
         .then((res) => {
+            console.log('요청성공');
             console.log("서버 응답:", res.data);
             setNameduplication(res.data.success);
             alert(res.data.message);
@@ -119,7 +116,7 @@ const Memberregister = () => {
                         </div>
                         <div>
                             <input 
-                            type="text" 
+                            type="password" 
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                              />
@@ -131,7 +128,7 @@ const Memberregister = () => {
                         </div>
                         <div>
                             <input 
-                            type="text" 
+                            type="password" 
                             value={checkpassword}
                             onChange={(e) => setCheckpassword(e.target.value)}
                              />
@@ -152,9 +149,6 @@ const Memberregister = () => {
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                              />
-                        </div>
-                        <div>
-                            <button>중복확인</button>
                         </div>
                     </div>
                 </div>

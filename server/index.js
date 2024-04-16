@@ -90,7 +90,7 @@ app.get("/user", (req, res) => {
   })
 })
 
-app.post("/chekusername", (req, res) => {
+app.post("/checkusername", (req, res) => {
   const { username } = req.body;
   const sqlQuery = "SELECT * FROM user WHERE username = ?";
   pool.query(sqlQuery, [username], (err, result) => {
@@ -118,20 +118,32 @@ app.post("/chekusername", (req, res) => {
   });
 });
 
-app.post("/userregister", (req, res) => {
+app.post("/userregister", async (req, res) => {
   const { username, nickname, password, email } = req.body;
-  const hashedPassword = bcrypt.hash(password, 10);
+  
+  try {
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-  const sqlQuery = "INSERT INTO user (userid, username, nickname, password, email) VALUES (null, ?, ?, ?, ?)";
+    const sqlQuery = "INSERT INTO user (userid, username, nickname, password, email) VALUES (null, ?, ?, ?, ?)";
 
-  pool.query(sqlQuery, [username, nickname, hashedPassword, email], (err, result) => {
-    if(err) {
-      console.error("Error inserting into database", err);
-    }
-    else {
-      res.status(200).send("Data upload and data base upadated");
-    };
-  })
+    pool.query(sqlQuery, [username, nickname, hashedPassword, email], (err, result) => {
+      if(err) {
+        console.error("Error inserting into database", err);
+      }
+      else {
+        res.status(200).send("Data upload and data base upadated");
+      };
+    })
+  }
+  catch (error) {
+    console.error("회원가입 중 오류:", error);
+    return res.status(500).json({
+      success: false,
+      message: "내부 서버 오류",
+      details: error.message,
+    });
+  }
+  
 })
 
 
