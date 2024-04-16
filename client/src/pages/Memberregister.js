@@ -17,7 +17,6 @@ const Memberregister = () => {
             alert("ID를 입력해주세요!");
             return
         }
-        console.log(username)
         axios.post('http://localhost:8000/checkusername', { username })
         .then((res) => {
             console.log('요청성공');
