@@ -119,7 +119,19 @@ app.post("/chekusername", (req, res) => {
 });
 
 app.post("/userregister", (req, res) => {
-  
+  const { username, nickname, password, email } = req.body;
+  const hashedPassword = bcrypt.hash(password, 10);
+
+  const sqlQuery = "INSERT INTO user (userid, username, nickname, password, email) VALUES (null, ?, ?, ?, ?)";
+
+  pool.query(sqlQuery, [username, nickname, hashedPassword, email], (err, result) => {
+    if(err) {
+      console.error("Error inserting into database", err);
+    }
+    else {
+      res.status(200).send("Data upload and data base upadated");
+    };
+  })
 })
 
 

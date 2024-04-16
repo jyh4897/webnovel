@@ -94,6 +94,11 @@ const Memberregister = () => {
                         </div>
                         <div>
                             <button onClick={handleUsernamecheck}>중복확인</button>
+                            {nameduplication ? 
+                            <div>
+                                <p>사용하실 수 있는 ID입니다.</p>
+                            </div>
+                            : ''}
                         </div>
                     </div>
                     <div>
