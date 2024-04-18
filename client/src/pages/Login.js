@@ -1,18 +1,32 @@
 import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 
 const Login = () => {
 
-    
+    const [id, setId] = useState('');
+    const [password, setPassword] = useState('');
+
+    useEffect(() => {
+        async function fetchData () {
+            try {
+                const rawData = await axios.get("http://localhost:8000/user", {})
+            }
+            catch (error) {
+                console.error('Error fetching data', error);
+            }
+        }
+    })
 
     return (
         <div>
             <div>
                 <div>
                     <div>
-                        <input type="text" placeholder="아이디" />
+                        <input type="text" placeholder="아이디" value={id} onChange={(e) => setId(e.target.value)} />
                     </div>
                     <div>
-                        <input type="password" placeholder="비밀번호" />
+                        <input type="password" placeholder="비밀번호" value={password} onChange={(e) => setPassword(e.target.value)} />
                     </div>
                 </div>
                 <div>
