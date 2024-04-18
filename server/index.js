@@ -5,6 +5,7 @@ const bcrypt = require("bcrypt");
 
 const multer = require("multer");
 const path = require("path");
+const jwt = require("jsonwebtoken");
 
 
 const app = express();
@@ -145,6 +146,17 @@ app.post("/userregister", async (req, res) => {
   }
 })
 
+app.post("/login", (req, res) => {
+  const { id, password } = req.body;
+  const sqlQuery = "SELECT * FROM user WHERE username = ?"
+
+  pool.query(sqlQuery, [id], (err, result) => {
+    const checkPassword = bcrypt.compare(password, result.password)
+    if (checkPassword) {
+      const accessToken = jwt.sign({ id : id})
+    }
+  })
+})
 
 
 app.listen(app.get("port"), () => {

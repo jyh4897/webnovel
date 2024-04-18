@@ -7,16 +7,16 @@ const Login = () => {
     const [id, setId] = useState('');
     const [password, setPassword] = useState('');
 
-    useEffect(() => {
-        async function fetchData () {
-            try {
-                const rawData = await axios.get("http://localhost:8000/user", {})
-            }
-            catch (error) {
-                console.error('Error fetching data', error);
-            }
+    const handleLogin = async (e) => {
+        e.preventDefault();
+        try {
+            await axios.post("http://localhost:8000/login", { id, password })
         }
-    })
+        catch (error) {
+            console.error('Error fetching data', error);
+        }
+        
+    }
 
     return (
         <div>
