@@ -6,14 +6,32 @@ const Login = () => {
 
     const [id, setId] = useState('');
     const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
 
     const handleLogin = async (e) => {
         e.preventDefault();
         try {
-            await axios.post("http://localhost:8000/login", { id, password })
+            await axios.post("http://localhost:8000/login", { id, password }, { withCredentials: true })
+            .then((response) => {
+                const { accessToken } = response.data;
+                axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;   
+            })
         }
         catch (error) {
-            console.error('Error fetching data', error);
+            if (error.response) {
+                const { status, data } = error.response;
+                console.log('Error status:', status);
+                console.log('Error data:', data);
+                if (status === 401 || status === 400) {
+                    setError("아이디 또는 비밀번호가 올바르지 않습니다.")
+                }
+                else {
+                    setError("서버 오류가 발생하였습니다.")
+                }
+            }
+            else {
+                console.error('Error fetching data', error);
+            }
         }
         
     }
