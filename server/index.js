@@ -27,6 +27,10 @@ const pool = mysql.createPool({
 });
 
 const secretkey = "ThisIsSecretkey@4897!";
+const refreshSecretkey = "ThisIsRefreshSecretkey@4897!"
+
+const accessExpiresIn = '30m';
+const refreshExpiresIn = '7d';
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -151,24 +155,25 @@ app.post("/login", (req, res) => {
   const { id, password } = req.body;
   const sqlQuery = "SELECT * FROM user WHERE username = ?"
 
-  pool.query(sqlQuery, [id], (err, result) => {
+  pool.query(sqlQuery, [id], async (err, result) => {
     if(err) {
       return res.status(500).json({ message : 'Internal server error'});
     }
 
     if (result.length > 0) {
       const user = result[0];
-      const checkPassword = bcrypt.compare(password, user.password)
+      const checkPassword = await bcrypt.compare(password, user.password)
       if (checkPassword) {
-        const accessToken = jwt.sign({ id : id }, secretkey, { expiresIn : '30m' });
-        return res.json({ accessToken });
+        const accessToken = jwt.sign({ id : id }, secretkey, { expiresIn : accessExpiresIn });
+        const refreshToken = jwt.sign({ id : id}, refreshSecretkey, { expiresIn : refreshExpiresIn})
+        return res.json({ accessToken, refreshToken });
       }
       else {
         return res.status(401).json({ message : 'Invalid Password'});
       }
     }
     else {
-      return res.status(400).json({ message : 'User not fonund '});
+      return res.status(400).json({ message : 'User not found '});
     }
   });
 });

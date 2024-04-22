@@ -14,7 +14,8 @@ const Login = () => {
             await axios.post("http://localhost:8000/login", { id, password }, { withCredentials: true })
             .then((response) => {
                 const { accessToken } = response.data;
-                axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;   
+                axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+                return response.data;   
             })
         }
         catch (error) {
