@@ -15,7 +15,7 @@ app.set("port", process.env.PORT || 8000);
 
 app.use(express.urlencoded({ extended: false })); 
 app.use(express.json()); 
-app.use(cors({ origin: "http://localhost:3000" }));
+app.use(cors({ origin: "http://localhost:3000", credentials: true, optionsSuccessStatus: 200,}));
 app.use(express.static(path.join(__dirname + "/images")));
 
 const pool = mysql.createPool({

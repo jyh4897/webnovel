@@ -15,7 +15,7 @@ const Login = () => {
             .then((response) => {
                 const { accessToken } = response.data;
                 axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
-                return response.data;   
+                return response.data;
             })
         }
         catch (error) {
@@ -49,7 +49,7 @@ const Login = () => {
                     </div>
                 </div>
                 <div>
-                    <button type="submit">로그인</button>
+                    <button type="submit" onClick={handleLogin}>로그인</button>
                 </div>
                 <div>
                     <div>
