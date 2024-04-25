@@ -1,20 +1,24 @@
 import { Link } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
+import { RefreshTokenContext } from '../RefreshTokenContext.js'
 
 const Login = () => {
 
     const [id, setId] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    const { refreshToken, setRefreshToken } = useContext(RefreshTokenContext);
 
     const handleLogin = async (e) => {
         e.preventDefault();
         try {
             await axios.post("http://localhost:8000/login", { id, password }, { withCredentials: true })
             .then((response) => {
-                const { accessToken } = response.data;
+                const { accessToken, refreshToken } = response.data;
                 axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+                setRefreshToken(refreshToken);
+                console.log(refreshToken);
                 return response.data;
             })
         }
@@ -36,6 +40,10 @@ const Login = () => {
         }
         
     }
+
+    useEffect(() => {
+        console.log(refreshToken)
+    },[refreshToken])
 
     return (
         <div>

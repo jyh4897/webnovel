@@ -1,19 +1,17 @@
 import React, { createContext, useContext, useState } from 'react';
 
-const RefreshTokencontext = createContext();
+export const RefreshTokenContext = createContext();
 
-const RefreshTokenProvider = ({ children }) => {
-    const [refreshToken, setRefreshToken] = useState(null);
+export const RefreshTokenProvider = ({ children }) => {
+  const [refreshToken, setRefreshToken] = useState(null);
 
-    return (
-        <RefreshTokencontext.Provider value={{ refreshToken, setRefreshToken }}>
-            {children}
-        </RefreshTokencontext.Provider>
-    )
-}
+  return (
+    <RefreshTokenContext.Provider value={{ refreshToken, setRefreshToken }}>
+      {children}
+    </RefreshTokenContext.Provider>
+  );
+};
 
-export default RefreshTokenProvider;
-
-export const useRefreshToken = () => {
-    return useContext(RefreshTokencontext);
-}
+// export const useRefreshToken = () => {
+//   return useContext(RefreshTokenContext);
+// };
