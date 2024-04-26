@@ -1,14 +1,16 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
-import { RefreshTokenContext } from '../RefreshTokenContext.js'
+import { tokenContext } from '../App';
+
 
 const Login = () => {
-
+    const navigate = useNavigate();
     const [id, setId] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
-    const { refreshToken, setRefreshToken } = useContext(RefreshTokenContext);
+    const { setRefreshToken } = useContext(tokenContext);
+
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -17,8 +19,8 @@ const Login = () => {
             .then((response) => {
                 const { accessToken, refreshToken } = response.data;
                 axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
-                setRefreshToken(refreshToken);
                 console.log(refreshToken);
+                setRefreshToken(refreshToken);
                 return response.data;
             })
         }
@@ -38,13 +40,11 @@ const Login = () => {
                 console.error('Error fetching data', error);
             }
         }
+        navigate("/")
         
     }
 
-    useEffect(() => {
-        console.log(refreshToken)
-    },[refreshToken])
-
+    
     return (
         <div>
             <div>

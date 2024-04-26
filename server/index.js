@@ -6,6 +6,7 @@ const bcrypt = require("bcrypt");
 const multer = require("multer");
 const path = require("path");
 const jwt = require("jsonwebtoken");
+const cookieParser = require("cookie-parser");
 
 
 const app = express();
@@ -17,6 +18,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json()); 
 app.use(cors({ origin: "http://localhost:3000", credentials: true, optionsSuccessStatus: 200,}));
 app.use(express.static(path.join(__dirname + "/images")));
+app.use(cookieParser());
 
 const pool = mysql.createPool({
   host : "127.0.0.1",
@@ -166,7 +168,7 @@ app.post("/login", (req, res) => {
       if (checkPassword) {
         const accessToken = jwt.sign({ id : id }, secretkey, { expiresIn : accessExpiresIn });
         const refreshToken = jwt.sign({ id : id}, refreshSecretkey, { expiresIn : refreshExpiresIn})
-        return res.json({ accessToken, refreshToken });
+        return res.json({ accessToken, refreshToken })
       }
       else {
         return res.status(401).json({ message : 'Invalid Password'});
@@ -177,6 +179,19 @@ app.post("/login", (req, res) => {
     }
   });
 });
+
+app.post("/refresh", (req, res) => {
+  const { refreshToken } = req.body;
+
+  jwt.verify(refreshToken, refreshSecretkey, (err, decoded) => {
+    if (err) {
+      return res.status(401).json({ message : 'Invalid refreshToken' });
+    }
+
+    const accessToken = jwt.sign({ id: decoded.id }, secretkey, { expiresIn : accessExpiresIn });
+    res.json({ accessToken });
+  })
+})
 
 
 app.listen(app.get("port"), () => {
